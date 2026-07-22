@@ -1,0 +1,16 @@
+{
+  "youtube_queries": [
+    { "q": "Path of Exile 2 build guide",  "lang": "en", "n": 15 },
+    { "q": "Path of Exile 2 league start", "lang": "en", "n": 15 },
+    { "q": "Path of Exile 2 гайд билд",     "lang": "ru", "n": 12 }
+  ],
+  "reddit": [
+    { "url": "https://www.reddit.com/r/PathOfExile2/top.rss?t=day&limit=12", "source": "r/PathOfExile2", "lang": "en" },
+    { "url": "https://www.reddit.com/r/pathofexile/top.rss?t=day&limit=10",  "source": "r/pathofexile",  "lang": "en" }
+  ],
+  "news": [
+    { "url": "https://www.pathofexile.com/news/rss", "source": "pathofexile.com", "lang": "en" }
+  ],
+  "limits": { "videos": 14, "reddit": 8, "news": 6, "analyze_top": 6 },
+  "analyze_model": "claude-sonnet-4-6"
+}

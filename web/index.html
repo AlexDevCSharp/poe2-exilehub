@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXILE HUB — стартовый хаб по Path of Exile 2</title>
+  <meta name="description" content="Что играть, куда качаться и что происходит в лиге PoE2 прямо сейчас — на одном экране." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#start">
+        <span class="brand-mark">◆</span>
+        <span class="brand-text">EXILE<span class="brand-accent">HUB</span></span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a href="#start">Старт</a>
+        <a href="#builds">Билды</a>
+        <a href="#meta">Мета</a>
+        <a href="#economy">Экономика</a>
+        <a href="#feed">Новости</a>
+      </nav>
+
+      <div class="header-tools">
+        <label class="search">
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Поиск: скилл, предмет, билд…" />
+        </label>
+        <div class="lang-toggle" id="langToggle" role="group" aria-label="Язык контента">
+          <button class="lang-btn is-active" data-lang="all">Все</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+        <button class="burger" id="burger" aria-label="Меню">☰</button>
+      </div>
+    </div>
+    <div class="league-strip">
+      <div class="container league-strip-inner">
+        <span class="pulse"></span>
+        <strong>Лига 0.5</strong>
+        <span class="dim">свежие видео, новости и Reddit по PoE2 — автоматически</span>
+        <span class="sample-tag">демо-данные</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ START / ONBOARDING ============ -->
+    <section id="start" class="section hero">
+      <div class="container">
+        <p class="eyebrow">С чего начать</p>
+        <h1 class="hero-title">Новичок в Path&nbsp;of&nbsp;Exile&nbsp;2<br />или догоняешь свежую лигу?</h1>
+        <p class="hero-sub">Один экран, чтобы понять, <b>что играть</b>, <b>куда качаться</b> и <b>что происходит в лиге</b> прямо сейчас. Без часов на чтение форумов и просмотр стримов.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#builds">Подобрать билд →</a>
+          <a class="btn btn-ghost" href="#feed">Что нового в лиге</a>
+        </div>
+
+        <ol class="roadmap" aria-label="Роадмап новичка">
+          <li class="rm-card">
+            <span class="rm-num">1</span>
+            <h3>Выбери стартовый билд</h3>
+            <p>Бери проверенный билд из тир-листа: дёшево, живуч, легко играть. Не изобретай в первый день.</p>
+            <a href="#builds" class="rm-link">К тир-листу →</a>
+          </li>
+          <li class="rm-card">
+            <span class="rm-num">2</span>
+            <h3>Разберись с лигой</h3>
+            <p>Что добавила лига, какая механика приносит лут и валюту, что фармить с самого старта.</p>
+            <a href="#feed" class="rm-link">Новости лиги →</a>
+          </li>
+          <li class="rm-card">
+            <span class="rm-num">3</span>
+            <h3>Пройди кампанию</h3>
+            <p>6 актов. Держи сопротивления на 75%, не скупись на жизнь и ману, прокачивай камни умений.</p>
+            <a href="#start" class="rm-link">Чек-лист актов →</a>
+          </li>
+          <li class="rm-card">
+            <span class="rm-num">4</span>
+            <h3>Войди в эндгейм</h3>
+            <p>Атлас, карты и боссы. Здесь начинается настоящая прогрессия и основной заработок.</p>
+            <a href="#meta" class="rm-link">Мета эндгейма →</a>
+          </li>
+        </ol>
+
+        <details class="explainer">
+          <summary>Что вообще такое «лига»? <span class="exp-hint">кликни</span></summary>
+          <p>Лига — это сезонный перезапуск игры. Все начинают с нуля на новой экономике, добавляется временная механика и новый контент. Свежий старт = равные условия для всех и самая живая торговля. Когда лига заканчивается, персонажи переезжают в «постоянный» режим, а через пару месяцев стартует следующая.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ BUILD TIER LIST ============ -->
+    <section id="builds" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Тир-лист стартовых билдов</p>
+            <h2>Что играть новичку прямо сейчас</h2>
+          </div>
+          <p class="section-note">в духе mobalytics · обновляется под лигу</p>
+        </div>
+
+        <div class="filters" id="buildFilters">
+          <div class="filter-group" data-filter="role">
+            <span class="filter-label">Роль</span>
+            <button class="chip is-active" data-value="all">Все</button>
+            <button class="chip" data-value="Лигостарт">Лигостарт</button>
+            <button class="chip" data-value="Фарм">Фарм</button>
+            <button class="chip" data-value="Боссинг">Боссинг</button>
+          </div>
+          <div class="filter-group" data-filter="budget">
+            <span class="filter-label">Бюджет</span>
+            <button class="chip is-active" data-value="all">Любой</button>
+            <button class="chip" data-value="Бомж">Бомж</button>
+            <button class="chip" data-value="Средний">Средний</button>
+            <button class="chip" data-value="Богатый">Богатый</button>
+          </div>
+        </div>
+
+        <div class="tierlist" id="tierlist"><!-- JS renders tier rows --></div>
+      </div>
+    </section>
+
+    <!-- ============ META + ECONOMY ============ -->
+    <section id="meta" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Мета и экономика</p>
+            <h2>Во что играют и сколько что стоит</h2>
+          </div>
+          <p class="section-note">в духе poe.ninja · срез за неделю</p>
+        </div>
+
+        <div class="meta-grid">
+          <div class="card panel">
+            <div class="panel-head">
+              <h3>Популярные аскенданси</h3>
+              <span class="panel-sub">% игроков · тренд за 7д</span>
+            </div>
+            <ul class="bar-list" id="ascMeta"><!-- JS --></ul>
+          </div>
+
+          <div class="card panel" id="economy">
+            <div class="panel-head">
+              <h3>Курс валют</h3>
+              <span class="panel-sub">цена в Exalted · за 24ч</span>
+            </div>
+            <div class="table-wrap">
+              <table class="econ-table">
+                <thead>
+                  <tr><th>Валюта</th><th>Цена</th><th class="ta-c">7 дней</th><th class="ta-r">24ч</th></tr>
+                </thead>
+                <tbody id="econBody"><!-- JS --></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NEWS / VIDEO FEED ============ -->
+    <section id="feed" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Лента</p>
+            <h2>Свежее по лиге <span class="live-dot"></span></h2>
+          </div>
+          <p class="section-note">YouTube · Reddit · офиц. новости — новое подсвечено</p>
+        </div>
+
+        <div class="feed-tabs" id="feedTabs">
+          <button class="tab is-active" data-type="all">Всё</button>
+          <button class="tab" data-type="video">Видео</button>
+          <button class="tab" data-type="reddit">Reddit</button>
+          <button class="tab" data-type="news">Новости</button>
+        </div>
+
+        <div class="feed-grid" id="feedGrid"><!-- JS --></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <span class="brand-mark">◆</span>
+        <span class="brand-text">EXILE<span class="brand-accent">HUB</span></span>
+        <p class="foot-note">Макет / prototype. Данные демонстрационные. Идеи структуры взяты из poe.ninja, poe2db, mobalytics и официального API Path&nbsp;of&nbsp;Exile.</p>
+      </div>
+      <div class="foot-cols">
+        <div><h4>Разделы</h4><a href="#start">С чего начать</a><a href="#builds">Билды</a><a href="#meta">Мета</a><a href="#feed">Новости</a></div>
+        <div><h4>Источники</h4><a href="https://poe.ninja" target="_blank" rel="noopener">poe.ninja</a><a href="https://poe2db.tw" target="_blank" rel="noopener">poe2db</a><a href="https://mobalytics.gg/poe-2" target="_blank" rel="noopener">mobalytics</a><a href="https://www.pathofexile.com/developer/docs" target="_blank" rel="noopener">PoE API</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

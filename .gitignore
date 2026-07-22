@@ -1,0 +1,8 @@
+.venv/
+tmp/
+__pycache__/
+*.pyc
+.env
+data/exilehub.db
+*.db
+.claude/settings.local.json

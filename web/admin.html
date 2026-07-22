@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXILE HUB · Админка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body.admin { padding-bottom: 60px; }
+    .admin-bar { position: sticky; top: 0; z-index: 40; background: linear-gradient(180deg, rgba(13,10,7,.96), rgba(13,10,7,.85)); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-soft); }
+    .admin-bar-inner { display: flex; align-items: center; gap: 16px; height: 60px; }
+    .admin-tag { font-family: var(--font-b); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--cyan); border: 1px solid rgba(92,202,191,.35); border-radius: 6px; padding: 2px 8px; margin-left: 8px; }
+    .admin-actions { margin-left: auto; display: flex; gap: 10px; }
+    .admin-actions .btn { padding: 9px 15px; font-size: 13.5px; }
+    .admin-status { font-size: 12.5px; color: var(--faint); padding-bottom: 8px; min-height: 20px; }
+    .admin-status.ok { color: var(--green); } .admin-status.err { color: var(--red); } .admin-status.busy { color: var(--cyan); }
+
+    main.container { padding-top: 26px; }
+    .add-form { background: var(--panel); border: 1px solid var(--gold); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .add-form h3 { grid-column: 1/-1; font-size: 16px; }
+    .add-form label { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 5px; }
+    .add-form .full { grid-column: 1/-1; }
+    .add-form input, .add-form select, .add-form textarea, .a-editor input, .a-editor textarea {
+      background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; color: var(--text);
+      font: inherit; font-size: 13.5px; padding: 8px 10px; width: 100%; }
+    .add-form textarea, .a-editor textarea { resize: vertical; min-height: 60px; }
+    .add-actions { grid-column: 1/-1; display: flex; gap: 10px; }
+
+    .a-count { font-size: 12px; color: var(--faint); margin: 0 0 14px; }
+    .admin-list { display: flex; flex-direction: column; gap: 12px; }
+    .a-item { display: flex; gap: 14px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+    .a-item.pinned { border-color: var(--gold); }
+    .a-item.hidden { opacity: .55; }
+    .a-thumb { width: 132px; flex: none; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #15100a; position: relative; display: grid; place-items: center; }
+    .a-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .a-thumb .ph { font-size: 26px; opacity: .5; }
+    .a-body { flex: 1; min-width: 0; }
+    .a-top { display: flex; align-items: flex-start; gap: 10px; }
+    .a-title { font-weight: 600; font-size: 15px; color: var(--text); line-height: 1.3; }
+    .a-meta { font-size: 12px; color: var(--faint); margin: 4px 0 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .a-badge { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); }
+    .b-new { color: var(--cyan); border-color: rgba(92,202,191,.4); } .b-approved { color: var(--green); border-color: rgba(116,196,122,.4); }
+    .b-hidden { color: var(--red); border-color: rgba(226,87,76,.4); } .b-type { color: var(--gold-br); }
+    .b-pin { color: var(--gold-br); border-color: var(--gold); }
+    .a-digest { font-size: 12.5px; color: var(--muted); border-left: 2px solid var(--cyan); padding-left: 10px; margin: 6px 0; }
+    .a-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .a-btn { font: inherit; font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 8px; cursor: pointer; border: 1px solid var(--line); background: var(--panel); color: var(--muted); transition: .15s; }
+    .a-btn:hover { color: var(--text); border-color: var(--gold); }
+    .a-btn.on-approve:hover { border-color: var(--green); color: var(--green); }
+    .a-btn.on-hide:hover { border-color: var(--red); color: var(--red); }
+    .a-btn.on-del:hover { border-color: var(--red); color: var(--red); }
+    .a-btn.active { background: rgba(200,170,110,.14); color: var(--gold-br); border-color: var(--gold); }
+    .a-editor { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); display: none; flex-direction: column; gap: 9px; }
+    .a-editor.open { display: flex; }
+    .a-editor label { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .5px; display: flex; flex-direction: column; gap: 5px; }
+    .tg-panel { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); display: none; flex-direction: column; gap: 9px; }
+    .tg-panel.open { display: flex; }
+    .tg-panel label { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .5px; display: flex; flex-direction: column; gap: 5px; }
+    .tg-hint { text-transform: none; letter-spacing: 0; color: var(--cyan); font-weight: 600; }
+    .b-tg { color: #6fb8ff; border-color: rgba(111,184,255,.4); }
+    .empty { color: var(--faint); text-align: center; padding: 50px; }
+  </style>
+</head>
+<body class="admin">
+  <header class="admin-bar">
+    <div class="container admin-bar-inner">
+      <a class="brand" href="/"><span class="brand-mark">◆</span><span class="brand-text">EXILE<span class="brand-accent">HUB</span></span><span class="admin-tag">админка</span></a>
+      <div class="admin-actions">
+        <button id="btnRefresh" class="btn btn-ghost">↻ Прогнать пайплайн</button>
+        <button id="btnAdd" class="btn btn-ghost">✚ Добавить</button>
+        <button id="btnPublish" class="btn btn-gold">⬆ Опубликовать на сайт</button>
+      </div>
+    </div>
+    <div class="container admin-status" id="status">Загрузка…</div>
+  </header>
+
+  <main class="container">
+    <div class="filters">
+      <div class="filter-group" id="statusTabs">
+        <span class="filter-label">Статус</span>
+        <button class="chip is-active" data-status="all">Все</button>
+        <button class="chip" data-status="new">Новые</button>
+        <button class="chip" data-status="approved">Одобрено</button>
+        <button class="chip" data-status="hidden">Скрыто</button>
+      </div>
+    </div>
+
+    <div id="addForm" class="add-form hidden">
+      <h3>Добавить запись вручную</h3>
+      <label>Тип
+        <select id="f-type"><option value="news">Новость/статья</option><option value="video">Видео</option><option value="reddit">Reddit</option></select>
+      </label>
+      <label>Язык
+        <select id="f-lang"><option value="ru">RU</option><option value="en">EN</option></select>
+      </label>
+      <label class="full">Заголовок<input id="f-title" placeholder="Заголовок карточки" /></label>
+      <label>Ссылка (url)<input id="f-url" placeholder="https://…" /></label>
+      <label>Обложка (url, необязательно)<input id="f-thumb" placeholder="https://…jpg" /></label>
+      <label class="full">Текст / описание<textarea id="f-snippet" placeholder="Короткий текст карточки"></textarea></label>
+      <label class="full">TL;DR (необязательно)<textarea id="f-tldr" placeholder="Сжатая суть для дайджеста"></textarea></label>
+      <div class="add-actions">
+        <button id="f-save" class="btn btn-gold">Добавить</button>
+        <button id="f-cancel" class="btn btn-ghost">Отмена</button>
+      </div>
+    </div>
+
+    <p class="a-count" id="count"></p>
+    <div id="adminList" class="admin-list"></div>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

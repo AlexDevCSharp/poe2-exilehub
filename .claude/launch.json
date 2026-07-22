@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "exilehub-api",
+      "runtimeExecutable": ".venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "backend.app:app", "--port", "8000", "--reload", "--reload-dir", "backend", "--reload-dir", "pipeline"],
+      "port": 8000
+    },
+    {
+      "name": "exilehub-static",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5050", "--directory", "web"],
+      "port": 5050
+    }
+  ]
+}
