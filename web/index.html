@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
   <!-- ============ HEADER ============ -->
@@ -24,6 +24,7 @@
         <a href="#builds">Билды</a>
         <a href="#meta">Мета</a>
         <a href="#economy">Экономика</a>
+        <a href="#articles" id="navArticles" class="hidden">Статьи</a>
         <a href="#feed">Новости</a>
       </nav>
 
@@ -166,6 +167,34 @@
       </div>
     </section>
 
+    <!-- ============ ARTICLES ============ -->
+    <section id="articles" class="section hidden">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Гайды и статьи</p>
+            <h2>Большие материалы</h2>
+          </div>
+          <p class="section-note">от редакции</p>
+        </div>
+        <div class="articles-grid" id="articlesGrid"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ============ CREATORS ============ -->
+    <section id="creators" class="section hidden">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Кого смотреть</p>
+            <h2>Стримеры и блогеры</h2>
+          </div>
+          <p class="section-note">рекомендуем</p>
+        </div>
+        <div class="creators-grid" id="creatorsGrid"><!-- JS --></div>
+      </div>
+    </section>
+
     <!-- ============ NEWS / VIDEO FEED ============ -->
     <section id="feed" class="section">
       <div class="container">
@@ -204,6 +233,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

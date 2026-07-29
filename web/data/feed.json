@@ -15,12 +15,12 @@
       "url": "https://youtu.be/SAOsK-0Aa2U",
       "source": "",
       "channel": "Fubgun",
-      "views": 425714,
+      "views": 433113,
       "duration": "8:12",
       "thumb_url": "https://i.ytimg.com/vi/SAOsK-0Aa2U/hqdefault.jpg",
       "snippet": "",
       "video_id": "SAOsK-0Aa2U",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false,
       "digest": {
         "tldr": "Топ-10 стартовых билдов 0.5 для обычного игрока (первая неделя, ~40–50 ч). Список не отранжирован, но первые 6 сильнее остальных. Все проходят кампанию и бьют квестовых пинакл-боссов на SSF-шмоте.",
@@ -77,7 +77,23 @@
       "thumb_url": "https://i.ytimg.com/vi/X3dER1e2d7c/hqdefault.jpg",
       "snippet": "",
       "video_id": "X3dER1e2d7c",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
+      "isNew": false
+    },
+    {
+      "id": "yt:I0dD-5I_xlw",
+      "type": "video",
+      "lang": "en",
+      "title": "How Top Players Get Fully Geared On League Start",
+      "url": "https://youtu.be/I0dD-5I_xlw",
+      "source": "",
+      "channel": "Mirror Tier | POE 2",
+      "views": 389539,
+      "duration": "17:30",
+      "thumb_url": "https://i.ytimg.com/vi/I0dD-5I_xlw/hqdefault.jpg",
+      "snippet": "",
+      "video_id": "I0dD-5I_xlw",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -93,7 +109,7 @@
       "thumb_url": "https://i.ytimg.com/vi/MRxL8r2Z5jE/hqdefault.jpg",
       "snippet": "",
       "video_id": "MRxL8r2Z5jE",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false,
       "digest": {
         "tldr": "Разбор базовых механик PoE2 для новичка: как устроены классы и камни умений, и что не потерять в первые часы, чтобы не путаться.",
@@ -118,22 +134,6 @@
       "featured": false
     },
     {
-      "id": "yt:I0dD-5I_xlw",
-      "type": "video",
-      "lang": "en",
-      "title": "How Top Players Get Fully Geared On League Start",
-      "url": "https://youtu.be/I0dD-5I_xlw",
-      "source": "",
-      "channel": "Mirror Tier | POE 2",
-      "views": 326760,
-      "duration": "17:30",
-      "thumb_url": "https://i.ytimg.com/vi/I0dD-5I_xlw/hqdefault.jpg",
-      "snippet": "",
-      "video_id": "I0dD-5I_xlw",
-      "time": "27 дн назад",
-      "isNew": false
-    },
-    {
       "id": "yt:tWVuW8TKhBM",
       "type": "video",
       "lang": "en",
@@ -146,7 +146,7 @@
       "thumb_url": "https://i.ytimg.com/vi/tWVuW8TKhBM/hqdefault.jpg",
       "snippet": "",
       "video_id": "tWVuW8TKhBM",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -162,7 +162,7 @@
       "thumb_url": "https://i.ytimg.com/vi/WGV-pYLbn4g/hqdefault.jpg",
       "snippet": "",
       "video_id": "WGV-pYLbn4g",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -178,7 +178,7 @@
       "thumb_url": "https://i.ytimg.com/vi/tUkSMhwwS_A/hqdefault.jpg",
       "snippet": "",
       "video_id": "tUkSMhwwS_A",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -194,7 +194,7 @@
       "thumb_url": "https://i.ytimg.com/vi/W0UcprSk8V8/hqdefault.jpg",
       "snippet": "",
       "video_id": "W0UcprSk8V8",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -210,7 +210,7 @@
       "thumb_url": "https://i.ytimg.com/vi/ml5CEJ71KH4/hqdefault.jpg",
       "snippet": "",
       "video_id": "ml5CEJ71KH4",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -226,7 +226,7 @@
       "thumb_url": "https://i.ytimg.com/vi/DnhOkthA5Z4/hqdefault.jpg",
       "snippet": "",
       "video_id": "DnhOkthA5Z4",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -242,7 +242,7 @@
       "thumb_url": "https://i.ytimg.com/vi/hf6aG0ZbGOQ/hqdefault.jpg",
       "snippet": "",
       "video_id": "hf6aG0ZbGOQ",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -258,7 +258,7 @@
       "thumb_url": "https://i.ytimg.com/vi/TKGGnlx29mo/hqdefault.jpg",
       "snippet": "",
       "video_id": "TKGGnlx29mo",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -274,7 +274,7 @@
       "thumb_url": "https://i.ytimg.com/vi/vMs8k5qE3dk/hqdefault.jpg",
       "snippet": "",
       "video_id": "vMs8k5qE3dk",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false,
       "digest": {
         "tldr": "20 частых ошибок новичков в PoE2 и как их избежать — от пропущенных очков пассивок до слитой впустую валюты.",
@@ -310,7 +310,7 @@
       "thumb_url": "https://i.ytimg.com/vi/272uflC8bPg/hqdefault.jpg",
       "snippet": "",
       "video_id": "272uflC8bPg",
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -326,7 +326,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -342,7 +342,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "34 дн назад",
       "isNew": false
     },
     {
@@ -358,7 +358,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "34 дн назад",
       "isNew": false
     },
     {
@@ -374,7 +374,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -390,7 +390,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -406,7 +406,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
@@ -422,7 +422,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "34 дн назад",
       "isNew": false
     },
     {
@@ -438,7 +438,7 @@
       "thumb_url": "",
       "snippet": "",
       "video_id": null,
-      "time": "27 дн назад",
+      "time": "33 дн назад",
       "isNew": false
     },
     {
