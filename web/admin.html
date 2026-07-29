@@ -26,6 +26,10 @@
       background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; color: var(--text);
       font: inherit; font-size: 13.5px; padding: 8px 10px; width: 100%; }
     .add-form textarea, .a-editor textarea { resize: vertical; min-height: 60px; }
+    /* dark-theme native date picker + visible calendar icon */
+    input[type="date"] { color-scheme: dark; cursor: pointer; }
+    input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .85; filter: invert(0.9) brightness(1.4); }
+    input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
     .add-actions { grid-column: 1/-1; display: flex; gap: 10px; }
 
     .a-count { font-size: 12px; color: var(--faint); margin: 0 0 14px; }
@@ -60,6 +64,25 @@
     .tg-panel label { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .5px; display: flex; flex-direction: column; gap: 5px; }
     .tg-hint { text-transform: none; letter-spacing: 0; color: var(--cyan); font-weight: 600; }
     .b-tg { color: #6fb8ff; border-color: rgba(111,184,255,.4); }
+    .sr-row { display: flex; gap: 10px; align-items: center; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px; cursor: pointer; }
+    .sr-row:hover { border-color: var(--cyan); }
+    .sr-check { width: auto; flex: none; }
+    .sr-thumb { width: 80px; height: 45px; object-fit: cover; border-radius: 5px; flex: none; background: #15100a; }
+    .sr-body { min-width: 0; }
+    .sr-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
+    .sr-meta { font-size: 12px; color: var(--faint); margin-top: 2px; }
+    .cr-row { background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+    .cr-head { display: flex; align-items: center; gap: 10px; }
+    .cr-name { font-weight: 600; color: var(--text); font-size: 14px; }
+    .cr-meta { font-size: 12px; color: var(--faint); flex: 1; }
+    .cr-meta a { color: var(--gold); }
+    .cr-editor { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); grid-template-columns: 1fr 1fr; gap: 8px; }
+    .cr-editor.open { display: grid; }
+    .cr-editor label { font-size: 11px; color: var(--faint); display: flex; flex-direction: column; gap: 4px; }
+    .cr-editor .full { grid-column: 1 / -1; }
+    .cr-editor input, .cr-editor select, .cr-editor textarea { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; color: var(--text); font: inherit; font-size: 13px; padding: 6px 8px; }
+    .ar-body-input { min-height: 200px; line-height: 1.55; resize: vertical; }
+    .ar-status { font-size: 10.5px; font-weight: 700; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); }
     .empty { color: var(--faint); text-align: center; padding: 50px; }
   </style>
 </head>
@@ -69,6 +92,10 @@
       <a class="brand" href="/"><span class="brand-mark">◆</span><span class="brand-text">EXILE<span class="brand-accent">HUB</span></span><span class="admin-tag">админка</span></a>
       <div class="admin-actions">
         <button id="btnRefresh" class="btn btn-ghost">↻ Прогнать пайплайн</button>
+        <button id="btnSearch" class="btn btn-ghost">🔎 Поиск</button>
+        <button id="btnCreators" class="btn btn-ghost">🧑‍💻 Блогеры</button>
+        <button id="btnArticles" class="btn btn-ghost">📝 Статьи</button>
+        <button id="btnBackup" class="btn btn-ghost">💾 Бэкап</button>
         <button id="btnAdd" class="btn btn-ghost">✚ Добавить</button>
         <button id="btnPublish" class="btn btn-gold">⬆ Опубликовать на сайт</button>
       </div>
@@ -84,6 +111,7 @@
         <button class="chip" data-status="new">Новые</button>
         <button class="chip" data-status="approved">Одобрено</button>
         <button class="chip" data-status="hidden">Скрыто</button>
+        <button class="chip" data-status="deleted">Удалено</button>
       </div>
     </div>
 
@@ -104,6 +132,57 @@
         <button id="f-save" class="btn btn-gold">Добавить</button>
         <button id="f-cancel" class="btn btn-ghost">Отмена</button>
       </div>
+    </div>
+
+    <div id="searchPanel" class="add-form hidden" style="border-color: var(--cyan);">
+      <h3>🔎 Поиск видео <span style="font-weight:400;color:var(--faint);font-size:12px">— заполни только нужные поля, пустые игнорируются</span></h3>
+      <label class="full">Тема / ключевые слова<input id="s-query" placeholder="напр. spark stormweaver, league start, endgame…" /></label>
+      <label>Период
+        <select id="s-period">
+          <option value="any">Любой</option>
+          <option value="today">Сегодня</option>
+          <option value="yesterday">Вчера</option>
+          <option value="7d">За неделю</option>
+          <option value="30d">За месяц</option>
+          <option value="range">Диапазон дат…</option>
+        </select>
+      </label>
+      <label>Сортировка
+        <select id="s-sort">
+          <option value="relevance">По релевантности</option>
+          <option value="date">По дате (свежие)</option>
+          <option value="views">По просмотрам</option>
+        </select>
+      </label>
+      <label id="s-from-wrap" class="hidden">Дата с<input id="s-from" type="date" /></label>
+      <label id="s-to-wrap" class="hidden">Дата по<input id="s-to" type="date" /></label>
+      <label>Автор / канал<input id="s-author" placeholder="напр. Fubgun (необязательно)" /></label>
+      <label>Мин. просмотров<input id="s-minviews" type="number" placeholder="напр. 10000" /></label>
+      <label>Язык (тег)<select id="s-lang"><option value="">—</option><option value="en">EN</option><option value="ru">RU</option></select></label>
+      <label>Сколько результатов<input id="s-limit" type="number" value="15" min="1" max="30" /></label>
+      <label class="full" style="flex-direction:row;align-items:center;gap:8px"><input id="s-poe2" type="checkbox" checked style="width:auto" /> Только Path of Exile 2</label>
+      <div class="add-actions">
+        <button id="s-run" class="btn btn-gold">🔎 Найти</button>
+        <button id="s-close" class="btn btn-ghost">Закрыть</button>
+        <span id="s-status" style="align-self:center;font-size:12.5px;color:var(--faint)"></span>
+      </div>
+      <div id="searchResults" class="full" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div id="s-addbar" class="full hidden"><button id="s-add" class="btn btn-gold">✚ Добавить выбранные в очередь</button></div>
+    </div>
+
+    <div id="creatorsPanel" class="add-form hidden" style="border-color: var(--gold-br); grid-template-columns: 1fr;">
+      <h3>🧑‍💻 Блогеры <span id="cr-count" style="color:var(--faint);font-weight:400;font-size:12px"></span>
+        <button id="cr-backfill" class="a-btn" style="float:right">🔗 Привязать по каналам</button></h3>
+      <div id="creatorsList" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+    <div id="articlesPanel" class="add-form hidden" style="border-color: var(--cyan); grid-template-columns: 1fr;">
+      <h3>📝 Статьи <span id="ar-count" style="color:var(--faint);font-weight:400;font-size:12px"></span>
+        <span style="float:right;display:flex;gap:8px">
+          <button id="ar-new" class="a-btn active">✚ Новая статья</button>
+          <button id="ar-publish" class="a-btn">⬆ Опубликовать на сайт</button>
+        </span></h3>
+      <div id="articlesList" style="display:flex;flex-direction:column;gap:8px"></div>
     </div>
 
     <p class="a-count" id="count"></p>
