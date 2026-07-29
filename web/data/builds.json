@@ -1,0 +1,27 @@
+{
+  "source": "mobalytics",
+  "source_url": "https://mobalytics.gg/poe-2/tier-list",
+  "note": "Названия/тиры и ссылки на гайды — с mobalytics.gg (атрибуция, без копирования текстов).",
+  "generated_at": "2026-07-24",
+  "builds": [
+    { "tier": "S", "name": "Ice Shot — Fubgun", "asc": "Deadeye", "icon": "🏹", "url": "https://mobalytics.gg/poe-2/builds/ice-shot-deadeye" },
+    { "tier": "S", "name": "Galvanic / Stormblast — Ruetoo", "asc": "Tactician", "icon": "🔫", "url": "https://mobalytics.gg/poe-2/builds/ruetoo-tactician-mirage" },
+    { "tier": "S", "name": "Twister — Snoobae", "asc": "Spirit Walker", "icon": "🌀", "url": "https://mobalytics.gg/poe-2/builds/twister-spirit-walker-snoobae" },
+    { "tier": "S", "name": "Twister — Kripparrian", "asc": "Spirit Walker", "icon": "🌀", "url": "https://mobalytics.gg/poe-2/builds/twister-duration-stacker-spirit-walker" },
+    { "tier": "S", "name": "Companion Beast Master — CaptainLance9", "asc": "Spirit Walker", "icon": "🐾", "url": "https://mobalytics.gg/poe-2/builds/spirit-walker-beast-master" },
+    { "tier": "A", "name": "Plants — DeadRabb1t", "asc": "Druid", "icon": "🌱", "url": "https://mobalytics.gg/poe-2/builds/deadrabbit-spellcaster-druid" },
+    { "tier": "A", "name": "Plants — Raxx", "asc": "Druid", "icon": "🌱", "url": "https://mobalytics.gg/poe-2/builds/plant-druid-oracle-endgame-guide" },
+    { "tier": "A", "name": "Shaman Bear — Ronarray", "asc": "Druid", "icon": "🐻", "url": "https://mobalytics.gg/poe-2/builds/bear-druid-build-league-starter-to-endgame" },
+    { "tier": "A", "name": "Shaman Bear — CaptainLance9", "asc": "Druid", "icon": "🐻", "url": "https://mobalytics.gg/poe-2/builds/meteor-bear-druid" },
+    { "tier": "A", "name": "Shaman Totems — Waggle", "asc": "Shaman", "icon": "🗿", "url": "https://mobalytics.gg/poe-2/builds/waggle-spell-totem-shaman" },
+    { "tier": "A", "name": "ED Lich — DeadRabb1t", "asc": "Lich", "icon": "💀", "url": "https://mobalytics.gg/poe-2/builds/chaos-dot-lich-starter-deadrabbit" },
+    { "tier": "A", "name": "ED Lich — Ronarray", "asc": "Lich", "icon": "💀", "url": "https://mobalytics.gg/poe-2/builds/ronarray-minion-lich" },
+    { "tier": "A", "name": "Disciple — ds_lily", "asc": "Sorceress", "icon": "🔮", "url": "https://mobalytics.gg/poe-2/builds/djinn-sorceress-end-game" },
+    { "tier": "B", "name": "Grenades — Big Ducks", "asc": "Witchhunter", "icon": "💣", "url": "https://mobalytics.gg/poe-2/builds/explosive-witchhunter" },
+    { "tier": "B", "name": "Permafrost — Pohx", "asc": "Tactician", "icon": "❄️", "url": "https://mobalytics.gg/poe-2/builds/pohx-shatter-tactician" },
+    { "tier": "B", "name": "Stormblast — Woolie", "asc": "Witchhunter", "icon": "⚡", "url": "https://mobalytics.gg/poe-2/builds/woolie-run-n-gun-witch-hunter" },
+    { "tier": "B", "name": "Spark Leaguestarter — animeprincess", "asc": "Stormweaver", "icon": "⚡", "url": "https://mobalytics.gg/poe-2/builds/animeprincess-stormweaver-sorc-league-starter" },
+    { "tier": "D", "name": "Shield Wall — Lundburgerr", "asc": "Warrior", "icon": "🛡️", "url": "https://mobalytics.gg/poe-2/builds/warrior-league-start-lundburgerr" },
+    { "tier": "D", "name": "Bowbringer — Kalltorak", "asc": "Warrior", "icon": "🏹", "url": "https://mobalytics.gg/poe-2/builds/ironbound-bowbringer-leveling-and-end-game" }
+  ]
+}

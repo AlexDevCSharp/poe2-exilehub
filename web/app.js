@@ -84,10 +84,16 @@ function sparkline(values, color) {
 }
 
 const deltaHtml = (d) => {
-  if (d === 0) return `<span class="delta" style="color:var(--faint)">—</span>`;
+  if (!d) return `<span class="delta" style="color:var(--faint)">—</span>`;
   const up = d > 0;
   return `<span class="delta ${up ? "up" : "down"}">${up ? "▲" : "▼"} ${Math.abs(d)}%</span>`;
 };
+
+const trendHtml = (t) => t > 0 ? `<span class="delta up">▲</span>`
+  : t < 0 ? `<span class="delta down">▼</span>` : `<span class="delta" style="color:var(--faint)">—</span>`;
+
+const fmtPrice = (v) => v == null ? "" : v >= 100 ? Math.round(v).toLocaleString("ru-RU")
+  : v >= 10 ? v.toFixed(1) : v.toFixed(2);
 
 const pips = (n) => Array.from({ length: 3 }, (_, i) => `<span class="pip ${i < n ? "on" : ""}"></span>`).join("");
 
@@ -102,8 +108,42 @@ const thumbMedia = (i) => i.thumb_url
 /* ---------------- RENDER: TIER LIST ---------------- */
 
 const buildState = { role: "all", budget: "all" };
+let BUILD_DATA = null;   // replaced by data/builds.json (mobalytics link-out) when available
+
+async function loadBuilds() {
+  try {
+    const res = await fetch("data/builds.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const d = await res.json();
+    if (!Array.isArray(d.builds) || !d.builds.length) return;
+    BUILD_DATA = d.builds;
+    const note = document.querySelector("#builds .section-note");
+    if (note) note.innerHTML = `тир-лист и гайды: <a href="${esc(d.source_url || "https://mobalytics.gg/poe-2")}" target="_blank" rel="noopener" style="color:var(--gold)">mobalytics.gg</a>`;
+    const f = document.querySelector("#buildFilters");
+    if (f) f.style.display = "none";   // role/budget filters don't apply to link-out data
+  } catch (e) { /* keep demo builds */ }
+}
+
+function liveBuildCard(b) {
+  return `<a class="build-card" href="${esc(b.url)}" target="_blank" rel="noopener">
+    <div class="build-icon">${esc(b.icon || "⚔️")}</div>
+    <div class="build-body">
+      <div class="build-name">${esc(b.name)}</div>
+      <div class="build-asc">${esc(b.asc || "")}</div>
+      <div class="build-foot"><span class="build-link">Гайд на mobalytics →</span></div>
+    </div>
+  </a>`;
+}
 
 function renderTierlist() {
+  if (BUILD_DATA) {
+    $("#tierlist").innerHTML = ["S", "A", "B", "C", "D"].map(t => {
+      const cards = BUILD_DATA.filter(b => b.tier === t);
+      return cards.length ? `<div class="tier-row"><div class="tier-badge tier-${t}">${t}</div>
+        <div class="tier-cards">${cards.map(liveBuildCard).join("")}</div></div>` : "";
+    }).join("");
+    return;
+  }
   const filtered = BUILDS.filter(b =>
     (buildState.role === "all"   || b.roles.includes(buildState.role)) &&
     (buildState.budget === "all" || b.budget === buildState.budget)
@@ -140,23 +180,48 @@ function buildCard(b) {
 
 /* ---------------- RENDER: META ---------------- */
 
+let ascData = ASC_META;   // replaced by data/meta.json (poe.ninja) when available
+let curData = CURRENCY;
+let curUnit = "ex";
+
+async function loadMeta() {
+  try {
+    const res = await fetch("data/meta.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const d = await res.json();
+    if (Array.isArray(d.ascendancies) && d.ascendancies.length) ascData = d.ascendancies;
+    if (Array.isArray(d.currency) && d.currency.length) curData = d.currency;
+    if (d.unit) curUnit = d.unit;
+    if (d.generated_at) {
+      const sub = document.querySelector("#economy .panel-sub");
+      if (sub) sub.textContent = `цена в ${curUnit} · poe.ninja`;
+    }
+  } catch (e) { /* keep demo data */ }
+}
+
 function renderAscMeta() {
-  const max = Math.max(...ASC_META.map(a => a.pct));
-  $("#ascMeta").innerHTML = ASC_META.map(a => `
+  const max = Math.max(...ascData.map(a => a.pct));
+  $("#ascMeta").innerHTML = ascData.map(a => `
     <li class="bar-row">
-      <span class="bar-name">${esc(a.name)} <small>${esc(a.cls)}</small></span>
+      <span class="bar-name">${esc(a.name)}${a.cls ? ` <small>${esc(a.cls)}</small>` : ""}</span>
       <span class="bar-track"><span class="bar-fill" style="width:${(a.pct / max * 100).toFixed(0)}%"></span></span>
-      <span class="bar-meta"><span class="bar-pct">${a.pct}%</span>${deltaHtml(a.delta)}</span>
+      <span class="bar-meta"><span class="bar-pct">${a.pct}%</span>${a.delta != null ? deltaHtml(a.delta) : trendHtml(a.trend)}</span>
     </li>`).join("");
 }
 
 function renderEconomy() {
-  $("#econBody").innerHTML = CURRENCY.map(c => {
+  const unit = (curUnit || "ex").split(" ")[0].toLowerCase();
+  $("#econBody").innerHTML = curData.map(c => {
     const color = c.delta > 0 ? "var(--green)" : c.delta < 0 ? "var(--red)" : "var(--faint)";
+    const orb = c.img
+      ? `<span class="cur-orb"><img src="${esc(c.img)}" alt="" loading="lazy" onerror="this.parentNode.textContent='◈'"></span>`
+      : `<span class="cur-orb">${esc(c.orb || (c.name ? c.name[0].toUpperCase() : "◈"))}</span>`;
+    const price = c.price != null ? esc(c.price) : fmtPrice(c.value);
+    const spark = c.spark && c.spark.length ? c.spark : [1, 1];
     return `<tr>
-      <td><div class="cur-cell"><span class="cur-orb">${c.orb}</span><span class="cur-name">${esc(c.name)}</span></div></td>
-      <td><span class="cur-price">${esc(c.price)}</span> <span style="color:var(--faint);font-size:12px">ex</span></td>
-      <td class="ta-c">${sparkline(c.spark, color)}</td>
+      <td><div class="cur-cell">${orb}<span class="cur-name">${esc(c.name)}</span></div></td>
+      <td><span class="cur-price">${price}</span> <span style="color:var(--faint);font-size:11px">${esc(unit)}</span></td>
+      <td class="ta-c">${sparkline(spark, color)}</td>
       <td class="ta-r">${deltaHtml(c.delta)}</td>
     </tr>`;
   }).join("");
@@ -168,8 +233,10 @@ const feedState = { type: "all", lang: "all" };
 let FEED_ITEMS = FEED;   // replaced by data/feed.json when available
 
 async function loadFeed() {
-  // 1) live API (FastAPI), 2) static export, 3) inline demo
-  for (const url of ["/api/feed?limit=60", "data/feed.json"]) {
+  // On localhost try the live API first; on the public static site go straight to feed.json.
+  const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+  const sources = isLocal ? ["/api/feed?limit=60", "data/feed.json"] : ["data/feed.json"];
+  for (const url of sources) {
     try {
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
@@ -298,8 +365,53 @@ function wireChipGroup(container, onPick) {
   });
 }
 
+async function loadSiteArticles() {
+  try {
+    const res = await fetch("data/articles.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data.articles) || !data.articles.length) return;
+    $("#articlesGrid").innerHTML = data.articles.map(articleCard).join("");
+    document.querySelector("#articles")?.classList.remove("hidden");
+    document.querySelector("#navArticles")?.classList.remove("hidden");
+  } catch (e) { /* no articles yet */ }
+}
+
+function articleCard(a) {
+  const body = esc(a.body || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
+  return `<article class="article-card">
+    <h3 class="article-title">${a.promote ? "⭐ " : ""}${esc(a.title)}</h3>
+    ${a.author ? `<div class="article-author">${esc(a.author)}</div>` : ""}
+    ${a.summary ? `<p class="article-summary">${esc(a.summary)}</p>` : ""}
+    ${a.body ? `<details class="article-more"><summary>Читать полностью</summary><div class="article-body"><p>${body}</p></div></details>` : ""}
+  </article>`;
+}
+
+async function loadSiteCreators() {
+  try {
+    const res = await fetch("data/creators.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data.creators) || !data.creators.length) return;
+    $("#creatorsGrid").innerHTML = data.creators.map(creatorCard).join("");
+    document.querySelector("#creators")?.classList.remove("hidden");
+  } catch (e) { /* no promoted creators yet */ }
+}
+
+function creatorCard(c) {
+  const link = (url, label) => url ? `<a class="creator-social" href="${esc(url)}" target="_blank" rel="noopener">${label}</a>` : "";
+  const tg = c.telegram ? (c.telegram.startsWith("http") ? c.telegram : "https://t.me/" + c.telegram.replace(/^@/, "")) : "";
+  const tw = c.twitch ? (c.twitch.startsWith("http") ? c.twitch : "https://twitch.tv/" + c.twitch.replace(/^@/, "")) : "";
+  return `<article class="creator-card">
+    <div class="creator-name">${esc(c.name)}</div>
+    <div class="creator-socials">
+      ${link(c.youtube_url, "▶ YouTube")}${link(tg, "✈ Telegram")}${link(tw, "🎮 Twitch")}${link(c.website, "🔗 Сайт")}
+    </div>
+  </article>`;
+}
+
 async function init() {
-  await loadFeed();
+  await Promise.all([loadFeed(), loadMeta(), loadBuilds(), loadSiteArticles(), loadSiteCreators()]);
   renderTierlist();
   renderAscMeta();
   renderEconomy();

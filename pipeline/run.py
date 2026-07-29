@@ -232,6 +232,13 @@ def main():
         set_meta("league", league)
         set_meta("last_updated", NOW.isoformat())
 
+        try:
+            import poeninja
+            m = poeninja.write_meta_json()
+            log(f"✓ meta.json (poe.ninja): {len(m['ascendancies'])} asc, {len(m['currency'])} cur")
+        except Exception as e:
+            log(f"! poe.ninja meta failed: {e}")
+
         export_feed(lim.get("feed", 60))
         stats = {"videos": len(videos), "news": len(news), "reddit": len(reddit), "analyzed": analyzed}
         finish_run(run_id, True, stats)

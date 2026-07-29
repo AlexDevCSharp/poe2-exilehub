@@ -31,11 +31,21 @@ _load_env(ROOT / ".env")
 sys.path.insert(0, str(ROOT / "pipeline"))
 import db  # noqa: E402
 import telegram as tg  # noqa: E402
+import search  # noqa: E402
+import run as prun  # noqa: E402  (reuse analyze/get_transcript for search "add")
 
 db.init_db()
 db.seed_sources()
 
 app = FastAPI(title="EXILE HUB API", version="0.1")
+
+
+@app.middleware("http")
+async def _no_cache(request, call_next):
+    """Local dev: always serve fresh assets (no browser caching of app.js/css/json)."""
+    resp = await call_next(request)
+    resp.headers["Cache-Control"] = "no-store"
+    return resp
 
 
 @app.get("/api/meta")
@@ -91,9 +101,9 @@ def admin_update(item_id: str, payload: dict = Body(...)):
 
 
 @app.delete("/api/admin/item/{item_id:path}")
-def admin_delete(item_id: str):
-    db.delete_item(item_id)
-    return {"ok": True}
+def admin_delete(item_id: str, hard: bool = False):
+    (db.hard_delete_item if hard else db.delete_item)(item_id)   # soft by default
+    return {"ok": True, "hard": hard}
 
 
 @app.post("/api/admin/add")
@@ -103,9 +113,12 @@ def admin_add(payload: dict = Body(...)):
 
 @app.post("/api/admin/publish")
 def admin_publish():
-    """Regenerate the static snapshot the public site reads (web/data/feed.json)."""
-    n = db.export_feed(ROOT / "web" / "data" / "feed.json", limit=80)
-    return {"ok": True, "items": n}
+    """Regenerate ALL static snapshots the public site reads."""
+    data = ROOT / "web" / "data"
+    n = db.export_feed(data / "feed.json", limit=80)
+    a = db.export_articles(data / "articles.json")
+    c = db.export_creators(data / "creators.json")
+    return {"ok": True, "items": n, "articles": a, "creators": c}
 
 
 # ----------------------------- TELEGRAM -----------------------------
@@ -132,6 +145,108 @@ def tg_send(payload: dict = Body(...)):
     if res.get("ok") and not res.get("dry_run") and payload.get("item_id"):
         db.mark_tg_posted(payload["item_id"], True)
     return res
+
+
+# ----------------------------- SEARCH (admin discovery tool) -----------------------------
+
+@app.post("/api/admin/search")
+def admin_search(payload: dict = Body(...)):
+    try:
+        results = search.search_videos(
+            query=payload.get("query", ""), author=payload.get("author", ""),
+            period=payload.get("period", "any"), date_from=payload.get("date_from", ""),
+            date_to=payload.get("date_to", ""), min_views=payload.get("min_views") or 0,
+            sort=payload.get("sort", "relevance"), lang=payload.get("lang", ""),
+            only_poe2=payload.get("only_poe2", True), limit=payload.get("limit", 15))
+        known = db.known_status([r.get("video_id") for r in results])
+        for r in results:                       # annotate for dedup: already in DB / analyzed
+            k = known.get(r["id"], {})
+            r["known"], r["analyzed"] = k.get("known", False), k.get("analyzed", False)
+        return {"ok": True, "count": len(results), "results": results}
+    except Exception as e:
+        return {"ok": False, "error": str(e), "results": []}
+
+
+@app.post("/api/admin/search/add")
+def admin_search_add(payload: dict = Body(...)):
+    """Add selected search results to the queue; skip re-analysis of already-analyzed videos."""
+    added, digested = 0, 0
+    for it in payload.get("items", []):
+        it = dict(it); it["kind"] = "video"; it["found_via"] = "search"
+        db.upsert_item(it)
+        added += 1
+        if it.get("analyzed"):                  # already analyzed earlier — don't redo
+            continue
+        if payload.get("analyze", True) and it.get("video_id"):
+            try:
+                if prun.analyze(it):
+                    digested += 1
+            except Exception:
+                pass
+    return {"ok": True, "added": added, "digested": digested}
+
+
+# ----------------------------- CREATORS (data backbone) -----------------------------
+
+@app.get("/api/admin/creators")
+def admin_creators(status: str = "all"):
+    return {"creators": db.list_creators(status=status)}
+
+
+@app.post("/api/admin/creator/{creator_id}")
+def admin_creator_update(creator_id: int, payload: dict = Body(...)):
+    if not db.update_creator(creator_id, payload):
+        raise HTTPException(status_code=404, detail="creator not found")
+    return {"ok": True}
+
+
+@app.post("/api/admin/creators/backfill")
+def admin_creators_backfill():
+    return {"ok": True, "linked": db.backfill_creators()}
+
+
+# ----------------------------- ARTICLES -----------------------------
+
+@app.get("/api/admin/articles")
+def admin_articles(status: str = "all"):
+    return {"articles": db.list_articles(status=status), "counts": db.article_counts()}
+
+
+@app.get("/api/admin/article/{article_id}")
+def admin_article_get(article_id: int):
+    a = db.get_article(article_id)
+    if not a:
+        raise HTTPException(status_code=404, detail="article not found")
+    return a
+
+
+@app.post("/api/admin/articles")
+def admin_article_create(payload: dict = Body(...)):
+    return {"ok": True, "id": db.create_article(payload)}
+
+
+@app.post("/api/admin/article/{article_id}")
+def admin_article_update(article_id: int, payload: dict = Body(...)):
+    if not db.update_article(article_id, payload):
+        raise HTTPException(status_code=404, detail="article not found")
+    return {"ok": True}
+
+
+@app.delete("/api/admin/article/{article_id}")
+def admin_article_delete(article_id: int):
+    db.delete_article(article_id)
+    return {"ok": True}
+
+
+@app.post("/api/admin/articles/publish")
+def admin_articles_publish():
+    n = db.export_articles(ROOT / "web" / "data" / "articles.json")
+    return {"ok": True, "published": n}
+
+
+@app.post("/api/admin/backup")
+def admin_backup():
+    return {"ok": True, "file": db.backup_db()}
 
 
 @app.get("/admin")
