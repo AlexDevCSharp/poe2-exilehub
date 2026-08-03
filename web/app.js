@@ -6,62 +6,13 @@
 
 /* ---------------- SAMPLE DATA ---------------- */
 
-const BUILDS = [
-  { name: "Spark Stormweaver",        asc: "Sorceress · Stormweaver", icon: "⚡", tier: "S", tags: ["Лёгкий", "Маг"],        roles: ["Лигостарт", "Фарм"],            budget: "Бомж",    diff: 1 },
-  { name: "Lightning Spear Amazon",   asc: "Huntress · Amazon",       icon: "🔱", tier: "S", tags: ["Мета", "Универсал"],     roles: ["Лигостарт", "Боссинг", "Фарм"], budget: "Средний", diff: 2 },
-  { name: "Gas Arrow Pathfinder",     asc: "Ranger · Pathfinder",     icon: "🏹", tier: "S", tags: ["Фарм карт", "Дёшево"],    roles: ["Фарм", "Лигостарт"],            budget: "Бомж",    diff: 2 },
-  { name: "Minion Infernalist",       asc: "Witch · Infernalist",     icon: "💀", tier: "A", tags: ["Безопасный", "Армия"],    roles: ["Лигостарт"],                    budget: "Бомж",    diff: 1 },
-  { name: "Hammer of the Gods",       asc: "Warrior · Warbringer",    icon: "🔨", tier: "A", tags: ["Боссинг", "Танк"],        roles: ["Боссинг"],                      budget: "Средний", diff: 2 },
-  { name: "Ice Strike Invoker",       asc: "Monk · Invoker",          icon: "❄️", tier: "A", tags: ["ДПС", "Скилловый"],       roles: ["Боссинг", "Фарм"],              budget: "Средний", diff: 3 },
-  { name: "Galvanic Shards Hunter",   asc: "Mercenary · Witchhunter", icon: "🔫", tier: "B", tags: ["Кроссбоу", "Дёшево"],     roles: ["Лигостарт", "Фарм"],            budget: "Бомж",    diff: 2 },
-  { name: "Comet Chronomancer",       asc: "Sorceress · Chronomancer",icon: "☄️", tier: "B", tags: ["Бурст", "Боссинг"],       roles: ["Боссинг"],                      budget: "Богатый", diff: 3 },
-];
+const BUILDS = [];
 
-const ASC_META = [
-  { name: "Amazon",      cls: "Huntress",  pct: 18.2, delta:  6.4 },
-  { name: "Stormweaver", cls: "Sorceress", pct: 13.5, delta: -1.2 },
-  { name: "Deadeye",     cls: "Ranger",    pct: 10.8, delta:  0.5 },
-  { name: "Invoker",     cls: "Monk",      pct:  9.1, delta: -2.0 },
-  { name: "Witchhunter", cls: "Mercenary", pct:  7.6, delta:  1.1 },
-  { name: "Infernalist", cls: "Witch",     pct:  7.0, delta: -0.8 },
-  { name: "Titan",       cls: "Warrior",   pct:  6.2, delta:  0.3 },
-];
+const ASC_META = [];
 
-const CURRENCY = [
-  { name: "Mirror of Kalandra", orb: "🪞", price: "168 000", delta:  3.1, spark: [120,124,121,130,135,150,162,168] },
-  { name: "Divine Orb",         orb: "🟡", price: "215",     delta:  8.4, spark: [180,178,185,190,188,200,210,215] },
-  { name: "Chaos Orb",          orb: "🟠", price: "9.4",     delta: -2.3, spark: [12,11.5,11,10.4,10,9.8,9.6,9.4] },
-  { name: "Annulment Orb",      orb: "🔵", price: "6.1",     delta:  1.2, spark: [5.6,5.7,5.9,5.8,6.0,6.0,6.05,6.1] },
-  { name: "Vaal Orb",           orb: "🟣", price: "1.8",     delta:  0.6, spark: [1.7,1.72,1.75,1.74,1.78,1.79,1.8,1.8] },
-  { name: "Exalted Orb",        orb: "⚪", price: "1.00",    delta:  0.0, spark: [1,1,1,1,1,1,1,1] },
-];
+const CURRENCY = [];
 
-const FEED = [
-  { type:"video", lang:"en", isNew:true, featured:true,
-    title:"Top 10 Builds to League Start in 0.5 — Path of Exile 2", channel:"Fubgun",
-    duration:"8:12", views:"418k", time:"свежее", thumb:"⚔️", grad:"thumb-grad-1",
-    url:"https://youtu.be/SAOsK-0Aa2U",
-    digest:{
-      tldr:"Топ-10 стартовых билдов 0.5 для обычного игрока (первая неделя, ~40–50 ч). Список не отранжирован, но первые 6 сильнее остальных. Все проходят кампанию и бьют квестовых пинакл-боссов на SSF-шмоте.",
-      signals:[
-        { t:"Тотемы: нерф",                       k:"down" },
-        { t:"Миньоны: +25% урона",                k:"up"   },
-        { t:"Твистеры / гранаты / арбалет: без нерфов", k:"ok" },
-        { t:"Друид-медведь: лёгкий нерф",         k:"down" },
-      ],
-      builds:["Ice Shot Deadeye","Twisters Deadeye","Гранаты/Арбалет Tactician","Martial Artist","Lich","Disciple of Varashta","Тотемы","Shield Wall Warrior","Bear Druid","Spark-каст"],
-      tags:["лигостарт","тир-лист","0.5","новичкам"],
-    } },
-  { type:"video",  lang:"en", isNew:true,  title:"Best League Start Builds for 0.2 — Full Tier List", channel:"Zizaran",            duration:"18:24", time:"2 ч назад",  thumb:"⚔️", grad:"thumb-grad-1" },
-  { type:"news",   lang:"en", isNew:true,  title:"0.2.1 Patch Notes — Balance Changes & Bug Fixes",   source:"pathofexile.com",     snippet:"Правки копейных умений Amazon, плотность монстров на картах, фиксы вылетов…", time:"5 ч назад" },
-  { type:"video",  lang:"ru", isNew:true,  title:"ТОП-5 билдов на старт лиги PoE2 — что качать новичку", channel:"Канал «Изгнанник»", duration:"22:10", time:"3 ч назад",  thumb:"🏹", grad:"thumb-grad-2" },
-  { type:"video",  lang:"ru", isNew:true,  title:"Разбор патча 0.2.1 за 10 минут",                    channel:"Канал «Поэзия»",     duration:"11:32", time:"6 ч назад",  thumb:"🛠️", grad:"thumb-grad-2" },
-  { type:"reddit", lang:"en", isNew:false, title:"PSA: ранний вендор-рецепт на сопротивления, который все пропускают", source:"r/PathOfExile2", ups:"1.2k", time:"8 ч назад" },
-  { type:"video",  lang:"en", isNew:false, title:"Gas Arrow Pathfinder — Mapping Guide + PoB",        channel:"Subtractem",         duration:"31:40", time:"1 дн назад", thumb:"🎯", grad:"thumb-grad-1" },
-  { type:"news",   lang:"en", isNew:false, title:"Срез экономики: Divine Orb взлетел после патча",     source:"poe.ninja",           snippet:"Divine +8% за сутки — вернулся спрос на крафт. Exalted стабилен…", time:"1 дн назад" },
-  { type:"reddit", lang:"ru", isNew:false, title:"Гайд: как фармить экзальты на старте без вложений",  source:"r/pathofexile",       ups:"342",  time:"1 дн назад" },
-  { type:"video",  lang:"en", isNew:false, title:"Endgame & Atlas Progression Explained for Beginners",channel:"CaptainLance",       duration:"24:05", time:"2 дн назад", thumb:"🗺️", grad:"thumb-grad-3" },
-];
+const FEED = [];
 
 /* ---------------- HELPERS ---------------- */
 
@@ -218,6 +169,7 @@ async function loadMeta() {
 }
 
 function renderAscMeta() {
+  if (!ascData.length) { $("#ascMeta").innerHTML = `<li class="empty-state">Пока нет данных — появятся после подключения к poe.ninja.</li>`; return; }
   const max = Math.max(...ascData.map(a => a.pct));
   $("#ascMeta").innerHTML = ascData.map(a => `
     <li class="bar-row">
@@ -228,6 +180,7 @@ function renderAscMeta() {
 }
 
 function renderEconomy() {
+  if (!curData.length) { $("#econBody").innerHTML = `<tr><td colspan="4" class="empty-state">Пока нет данных — появятся после подключения к poe.ninja.</td></tr>`; return; }
   const unit = (curUnit || "ex").split(" ")[0].toLowerCase();
   $("#econBody").innerHTML = curData.map(c => {
     const color = c.delta > 0 ? "var(--green)" : c.delta < 0 ? "var(--red)" : "var(--faint)";
@@ -278,9 +231,10 @@ function renderFeed() {
     (feedState.type === "all" || i.type === feedState.type) &&
     (feedState.lang === "all" || i.lang === feedState.lang)
   );
-  $("#feedGrid").innerHTML = items.length
-    ? items.map(feedCard).join("")
-    : `<p class="section-note">Под выбранные фильтры записей нет.</p>`;
+  const empty = FEED_ITEMS.length
+    ? `<p class="section-note">Под выбранные фильтры записей нет.</p>`
+    : `<p class="empty-state">Пока пусто. Скоро здесь появятся свежие видео, новости и Reddit по лиге — как только начнём наполнять ленту.</p>`;
+  $("#feedGrid").innerHTML = items.length ? items.map(feedCard).join("") : empty;
 }
 
 // Wrap a card in a real <a> when it has a destination (so it's clickable AND

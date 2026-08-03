@@ -308,6 +308,9 @@ a.feed-card:hover .feed-title { color: var(--gold-br); }
 
 .hidden { display: none !important; }
 
+/* pre-launch empty state (feed grid, meta panels, tables) */
+.empty-state { grid-column: 1 / -1; color: var(--muted); font-size: 14px; text-align: center; padding: 32px 16px; margin: 0; }
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 960px) {
   .roadmap { grid-template-columns: repeat(2, 1fr); }
