@@ -79,7 +79,7 @@ h1, h2, h3, h4 { font-family: var(--font-d); font-weight: 600; line-height: 1.15
 
 .header-tools { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 
-.search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 7px 11px; min-width: 230px; transition: .2s; }
+.search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 7px 11px; min-width: 150px; flex: 1 1 auto; max-width: 300px; transition: .2s; }
 .search:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,170,110,.12); }
 .search .ico { width: 16px; height: 16px; color: var(--faint); flex: none; }
 .search input { background: none; border: none; outline: none; color: var(--text); font-size: 13.5px; width: 100%; font-family: var(--font-b); }
@@ -218,7 +218,7 @@ a.build-card:hover { border-color: var(--gold); transform: translateY(-2px); box
 .feed-card { position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: .18s; }
 a.feed-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }  /* pointer/lift only when it's a real link */
 .feed-card.is-new { border-color: rgba(92,202,191,.55); box-shadow: 0 0 0 1px rgba(92,202,191,.25), 0 18px 40px -22px rgba(92,202,191,.4); }
-.feed-card.is-new::before { content: "NEW"; position: absolute; top: 10px; left: 10px; z-index: 2; font-size: 10.5px; font-weight: 800; letter-spacing: 1px; color: #04201d; background: var(--cyan); padding: 3px 8px; border-radius: 6px; box-shadow: 0 4px 12px -2px rgba(92,202,191,.6); }
+.feed-card.is-new::before { content: "NEW"; position: absolute; top: 10px; left: 10px; z-index: 2; font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #04201d; background: var(--cyan); padding: 3px 8px; border-radius: 6px; box-shadow: 0 4px 12px -2px rgba(92,202,191,.6); }
 
 .thumb { position: relative; aspect-ratio: 16/9; background: linear-gradient(135deg, #2a2114, #15100a); display: grid; place-items: center; overflow: hidden; }
 .thumb-emoji { font-size: 40px; opacity: .8; }
@@ -235,7 +235,7 @@ a.feed-card:hover { border-color: var(--gold); transform: translateY(-3px); box-
 .src-badge { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #1a1206; flex: none; }
 .src-yt { background: #ff4d4d; } .src-reddit { background: #ff7a3d; } .src-news { background: var(--gold); }  /* glyphs inherit dark #1a1206 from .src-badge → 5.7:1 / 7.1:1 (white failed AA) */
 .src-name { color: var(--muted); font-weight: 500; }
-.lang-pill { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: .5px; padding: 2px 6px; border-radius: 5px; border: 1px solid var(--line); color: var(--muted); }
+.lang-pill { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: .5px; padding: 2px 6px; border-radius: 5px; border: 1px solid var(--line); color: var(--muted); }
 .lang-pill.ru { color: #8fb4ff; border-color: rgba(143,180,255,.4); }
 .lang-pill.en { color: var(--gold-br); border-color: rgba(200,170,110,.4); }
 .feed-title { font-family: var(--font-b); font-weight: 600; font-size: 14.5px; line-height: 1.35; color: var(--text); }
@@ -268,12 +268,12 @@ a.feed-card:hover .feed-title { color: var(--gold-br); }
 
 /* compact digest on regular video cards */
 .digest-mini { margin-top: 2px; border-top: 1px dashed var(--line); padding-top: 9px; display: flex; flex-direction: column; gap: 7px; }
-.digest-mini-label { color: var(--cyan); font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.digest-mini-label { color: var(--cyan); font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
 .digest-mini-tldr { font-size: 12.5px; color: var(--text); margin: 0; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .digest-points.mini { padding-left: 16px; }
 .digest-points.mini li { font-size: 12px; }
 .mini-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.mini-tag { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; background: rgba(92,202,191,.1); color: var(--cyan); border: 1px solid rgba(92,202,191,.25); }
+.mini-tag { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: rgba(92,202,191,.1); color: var(--cyan); border: 1px solid rgba(92,202,191,.25); }
 
 /* ---------- ARTICLES ---------- */
 .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
@@ -313,7 +313,7 @@ a.feed-card:hover .feed-title { color: var(--gold-br); }
   .roadmap { grid-template-columns: repeat(2, 1fr); }
   .meta-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 720px) {
+@media (max-width: 1024px) {   /* compact header up to tablet-landscape: full desktop header (~1060px) overflows below ~1104px → horizontal scroll */
   .nav { position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg-2); border-bottom: 1px solid var(--line); padding: 8px; transform: translateY(-200%); transition: .25s; }
   .nav.open { transform: translateY(0); }
   .nav a { padding: 12px; border-radius: 8px; }
@@ -324,10 +324,12 @@ a.feed-card:hover .feed-title { color: var(--gold-br); }
   .league-strip .sample-tag { margin-left: 8px; }
   .feed-card.featured { flex-direction: column; }
   .feed-card.featured .thumb { width: 100%; aspect-ratio: 16/9; }
+  body { background-attachment: scroll; }  /* fixed multi-gradient bg causes repaint jank on mobile/tablet scroll */
 }
 @media (max-width: 460px) {
   .roadmap { grid-template-columns: 1fr; }
   .tier-row { grid-template-columns: 46px 1fr; }
+  .bar-row { grid-template-columns: 92px 1fr 76px; gap: 8px; }  /* was 130px…78px → progress bar squished to ~53px on phones */
 }
 
 /* ---------- A11Y: keyboard focus ---------- */
