@@ -13,7 +13,7 @@
 
   --text:      #ece3d2;
   --muted:     #a4957c;
-  --faint:     #756851;
+  --faint:     #978869;   /* WCAG AA: 4.9:1 on panels (was #756851 = 3.1:1, failed) */
 
   --gold:      #c8aa6e;
   --gold-br:   #e7cd8f;
@@ -158,8 +158,8 @@ h1, h2, h3, h4 { font-family: var(--font-d); font-weight: 600; line-height: 1.15
 .tier-D { background: linear-gradient(180deg, #a9b7c9, #8798ad); }
 .tier-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 
-.build-card { display: flex; gap: 13px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px; transition: .18s; cursor: pointer; }
-.build-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow); }
+.build-card { display: flex; gap: 13px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px; transition: .18s; }
+a.build-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow); }  /* pointer/lift only when it's a real link */
 .build-icon { width: 46px; height: 46px; flex: none; border-radius: 10px; display: grid; place-items: center; font-size: 22px; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.14), rgba(0,0,0,.25)); border: 1px solid var(--line); }
 .build-body { min-width: 0; flex: 1; }
 .build-name { font-weight: 600; font-size: 15px; color: var(--text); }
@@ -215,8 +215,8 @@ h1, h2, h3, h4 { font-family: var(--font-d); font-weight: 600; line-height: 1.15
 .tab.is-active { background: rgba(200,170,110,.12); color: var(--gold-br); border-color: var(--gold); }
 
 .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
-.feed-card { position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: .18s; cursor: pointer; }
-.feed-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }
+.feed-card { position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: .18s; }
+a.feed-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow); }  /* pointer/lift only when it's a real link */
 .feed-card.is-new { border-color: rgba(92,202,191,.55); box-shadow: 0 0 0 1px rgba(92,202,191,.25), 0 18px 40px -22px rgba(92,202,191,.4); }
 .feed-card.is-new::before { content: "NEW"; position: absolute; top: 10px; left: 10px; z-index: 2; font-size: 10.5px; font-weight: 800; letter-spacing: 1px; color: #04201d; background: var(--cyan); padding: 3px 8px; border-radius: 6px; box-shadow: 0 4px 12px -2px rgba(92,202,191,.6); }
 
@@ -233,13 +233,13 @@ h1, h2, h3, h4 { font-family: var(--font-d); font-weight: 600; line-height: 1.15
 .feed-body { padding: 14px 15px 15px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .feed-src { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
 .src-badge { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #1a1206; flex: none; }
-.src-yt { background: #ff4d4d; color: #fff; } .src-reddit { background: #ff7a3d; color: #fff; } .src-news { background: var(--gold); }
+.src-yt { background: #ff4d4d; } .src-reddit { background: #ff7a3d; } .src-news { background: var(--gold); }  /* glyphs inherit dark #1a1206 from .src-badge → 5.7:1 / 7.1:1 (white failed AA) */
 .src-name { color: var(--muted); font-weight: 500; }
 .lang-pill { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: .5px; padding: 2px 6px; border-radius: 5px; border: 1px solid var(--line); color: var(--muted); }
 .lang-pill.ru { color: #8fb4ff; border-color: rgba(143,180,255,.4); }
 .lang-pill.en { color: var(--gold-br); border-color: rgba(200,170,110,.4); }
 .feed-title { font-family: var(--font-b); font-weight: 600; font-size: 14.5px; line-height: 1.35; color: var(--text); }
-.feed-card:hover .feed-title { color: var(--gold-br); }
+a.feed-card:hover .feed-title { color: var(--gold-br); }
 .feed-snippet { font-size: 13px; color: var(--muted); margin: 0; }
 .feed-meta { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: 6px; font-size: 12px; color: var(--faint); }
 .feed-meta .up { color: var(--gold); font-weight: 600; }
@@ -328,4 +328,48 @@ h1, h2, h3, h4 { font-family: var(--font-d); font-weight: 600; line-height: 1.15
 @media (max-width: 460px) {
   .roadmap { grid-template-columns: 1fr; }
   .tier-row { grid-template-columns: 46px 1fr; }
+}
+
+/* ---------- A11Y: keyboard focus ---------- */
+/* Visible gold ring for keyboard users on every interactive control. */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* The search field already shows a ring via .search:focus-within — don't double it. */
+.search input:focus-visible { outline: none; }
+
+/* ---------- A11Y: reduced motion ---------- */
+/* Respect the OS "reduce motion" setting: kill the infinite pulses,
+   smooth-scroll and hover lifts; keep the UI fully usable. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .pulse, .live-dot { animation: none !important; }
+  a.feed-card:hover, a.build-card:hover, .rm-card:hover, .btn-gold:hover,
+  .card.panel:hover, .article-card:hover, .creator-card:hover { transform: none !important; }
+}
+
+/* ---------- ICONS (inline SVG, one family, themed via currentColor) ---------- */
+.ico-svg { display: inline-block; vertical-align: -0.14em; flex: none; }
+.src-badge .ico-svg { width: 13px; height: 13px; vertical-align: 0; }
+.creator-social { display: inline-flex; align-items: center; gap: 5px; }
+.creator-social .ico-svg { width: 14px; height: 14px; }
+.digest-label .ico-svg, .digest-mini-label .ico-svg, .digest-row-label .ico-svg { width: 12px; height: 12px; }
+.thumb-emoji { color: var(--faint); }
+.thumb-emoji .ico-svg { width: 42px; height: 42px; opacity: .55; }
+.build-icon .mono { font-family: var(--font-d); font-weight: 700; font-size: 21px; line-height: 1; color: var(--gold-br); }
+
+/* ---------- TOUCH TARGETS: enforce 44px only on coarse pointers (keeps desktop compact) ---------- */
+@media (pointer: coarse) {
+  .lang-btn, .chip, .tab { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .nav a { min-height: 44px; display: flex; align-items: center; }
+  .burger { width: 44px; height: 44px; }
+  .filter-group { gap: 8px; }
+  .feed-tabs { gap: 8px; }
 }

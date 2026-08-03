@@ -69,6 +69,24 @@ const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 
+/* Inline outline icons (Lucide/Phosphor style) — one consistent family, themeable
+   via currentColor, no emoji (emoji render differently per-OS and can't be tinted). */
+const _ICONS = {
+  play:      '<path d="M6 4l14 8-14 8z" fill="currentColor" stroke="none"/>',
+  youtube:   '<path d="M22.5 6.9a2.8 2.8 0 0 0-1.9-2C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.6.4a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.1 2.8 2.8 0 0 0 1.9 2c1.7.4 8.6.4 8.6.4s6.9 0 8.6-.4a2.8 2.8 0 0 0 1.9-2 29 29 0 0 0 .5-5.1 29 29 0 0 0-.5-5.1z"/><path d="M10 15l5-3-5-3z" fill="currentColor" stroke="none"/>',
+  newspaper: '<path d="M4 22a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M6 2h14a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>',
+  sparkles:  '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" fill="currentColor" stroke="none"/>',
+  send:      '<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/>',
+  twitch:    '<path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><path d="M11 11V7M16 11V7"/>',
+  globe:     '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/>',
+  star:      '<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" fill="currentColor" stroke="none"/>',
+  film:      '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/>',
+};
+const iconSvg = (name, cls = "ico-svg") =>
+  `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${_ICONS[name] || ""}</svg>`;
+/* Gold monogram for build cards — an illuminated-initial in place of a per-build emoji. */
+const monogram = (s) => `<span class="mono" aria-hidden="true">${esc((String(s).trim()[0] || "?").toUpperCase())}</span>`;
+
 function sparkline(values, color) {
   const w = 72, h = 22, pad = 2;
   const min = Math.min(...values), max = Math.max(...values);
@@ -102,8 +120,8 @@ const fmtViews = (n) => typeof n === "number"
   : (n || "");
 
 const thumbMedia = (i) => i.thumb_url
-  ? `<img class="thumb-img" src="${i.thumb_url}" alt="" loading="lazy" onerror="this.style.display='none'">`
-  : `<span class="thumb-emoji">${i.thumb || "🎬"}</span>`;
+  ? `<img class="thumb-img" src="${esc(i.thumb_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+  : `<span class="thumb-emoji">${iconSvg("film")}</span>`;
 
 /* ---------------- RENDER: TIER LIST ---------------- */
 
@@ -126,7 +144,7 @@ async function loadBuilds() {
 
 function liveBuildCard(b) {
   return `<a class="build-card" href="${esc(b.url)}" target="_blank" rel="noopener">
-    <div class="build-icon">${esc(b.icon || "⚔️")}</div>
+    <div class="build-icon">${monogram(b.name)}</div>
     <div class="build-body">
       <div class="build-name">${esc(b.name)}</div>
       <div class="build-asc">${esc(b.asc || "")}</div>
@@ -162,7 +180,7 @@ function renderTierlist() {
 
 function buildCard(b) {
   return `<div class="build-card">
-    <div class="build-icon">${b.icon}</div>
+    <div class="build-icon">${monogram(b.name)}</div>
     <div class="build-body">
       <div class="build-name">${esc(b.name)}</div>
       <div class="build-asc">${esc(b.asc)}</div>
@@ -265,47 +283,54 @@ function renderFeed() {
     : `<p class="section-note">Под выбранные фильтры записей нет.</p>`;
 }
 
+// Wrap a card in a real <a> when it has a destination (so it's clickable AND
+// keyboard-focusable); fall back to a non-interactive <article> when it doesn't,
+// so a card never *looks* clickable while doing nothing.
+function cardWrap(href, cls, inner) {
+  return href
+    ? `<a class="${cls}" href="${esc(href)}" target="_blank" rel="noopener">${inner}</a>`
+    : `<article class="${cls}">${inner}</article>`;
+}
+
 function feedCard(i) {
   const langPill = `<span class="lang-pill ${i.lang}">${i.lang.toUpperCase()}</span>`;
-  const newClass = i.isNew ? " is-new" : "";
+  const cls = `feed-card${i.isNew ? " is-new" : ""}`;
+  const href = i.url || i.link || "";
 
   if (i.featured && i.digest) return featuredCard(i);
 
   if (i.type === "video") {
-    return `<article class="feed-card${newClass}">
+    return cardWrap(href, cls, `
       <div class="thumb ${i.grad || ""}">
         ${thumbMedia(i)}
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         ${i.duration ? `<span class="duration">${esc(i.duration)}</span>` : ""}
       </div>
       <div class="feed-body">
-        <div class="feed-src"><span class="src-badge src-yt">▶</span><span class="src-name">${esc(i.channel)}</span>${langPill}</div>
+        <div class="feed-src"><span class="src-badge src-yt">${iconSvg("play")}</span><span class="src-name">${esc(i.channel)}</span>${langPill}</div>
         <h3 class="feed-title">${esc(i.title)}</h3>
         ${i.digest ? digestMini(i.digest) : ""}
         <div class="feed-meta"><span>${i.views != null && i.views !== "" ? fmtViews(i.views) + " просмотров" : "YouTube"}</span><span>${esc(i.time)}</span></div>
-      </div>
-    </article>`;
+      </div>`);
   }
 
   if (i.type === "reddit") {
-    return `<article class="feed-card${newClass}">
+    return cardWrap(href, cls, `
       <div class="feed-body">
         <div class="feed-src"><span class="src-badge src-reddit">r/</span><span class="src-name">${esc(i.source)}</span>${langPill}</div>
         <h3 class="feed-title">${esc(i.title)}</h3>
         <div class="feed-meta"><span class="up">${i.ups ? "▲ " + esc(i.ups) : "обсуждение"}</span><span>${esc(i.time)}</span></div>
-      </div>
-    </article>`;
+      </div>`);
   }
 
   // news
-  return `<article class="feed-card${newClass}">
+  return cardWrap(href, cls, `
     <div class="feed-body">
-      <div class="feed-src"><span class="src-badge src-news">📰</span><span class="src-name">${esc(i.source)}</span>${langPill}</div>
+      <div class="feed-src"><span class="src-badge src-news">${iconSvg("newspaper")}</span><span class="src-name">${esc(i.source)}</span>${langPill}</div>
       <h3 class="feed-title">${esc(i.title)}</h3>
-      <p class="feed-snippet">${esc(i.snippet)}</p>
+      ${i.snippet ? `<p class="feed-snippet">${esc(i.snippet)}</p>` : ""}
       <div class="feed-meta"><span>Новость</span><span>${esc(i.time)}</span></div>
-    </div>
-  </article>`;
+    </div>`);
 }
 
 function featuredCard(i) {
@@ -313,10 +338,11 @@ function featuredCard(i) {
   const signals = (d.signals || []).map(s => `<span class="signal ${s.k}">${esc(s.t)}</span>`).join("");
   const builds  = (d.builds  || []).map(b => `<span class="build-chip">${esc(b)}</span>`).join("");
   const points  = (d.points  || []).map(p => `<li>${esc(p)}</li>`).join("");
-  const sBlock = signals ? `<div class="digest-block"><span class="digest-row-label">🆕 Сигналы патча</span><div class="signals">${signals}</div></div>` : "";
+  const sBlock = signals ? `<div class="digest-block"><span class="digest-row-label">Сигналы патча</span><div class="signals">${signals}</div></div>` : "";
   const bBlock = builds  ? `<div class="digest-block"><span class="digest-row-label">Билды</span><div class="build-chips">${builds}</div></div>` : "";
   const pBlock = points  ? `<div class="digest-block"><span class="digest-row-label">Главное</span><ul class="digest-points">${points}</ul></div>` : "";
-  return `<article class="feed-card featured is-new">
+  const href = i.url || i.link || "";
+  return cardWrap(href, "feed-card featured is-new", `
     <div class="thumb ${i.grad || ""}">
       ${thumbMedia(i)}
       <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
@@ -324,26 +350,25 @@ function featuredCard(i) {
     </div>
     <div class="feed-body">
       <div class="feed-src">
-        <span class="src-badge src-yt">▶</span>
+        <span class="src-badge src-yt">${iconSvg("play")}</span>
         <span class="src-name">${esc(i.channel)}</span>
         ${i.views != null ? `<span class="src-name">· ${fmtViews(i.views)} просмотров</span>` : ""}
         <span class="lang-pill ${i.lang || "en"}">${(i.lang || "en").toUpperCase()}</span>
       </div>
       <h3 class="feed-title">${esc(i.title)}</h3>
       <div class="digest">
-        <div class="digest-label">✨ AI-дайджест из видео</div>
+        <div class="digest-label">${iconSvg("sparkles")} AI-дайджест из видео</div>
         <p class="digest-tldr">${esc(d.tldr)}</p>
         ${pBlock}${sBlock}${bBlock}
       </div>
-    </div>
-  </article>`;
+    </div>`);
 }
 
 function digestMini(d) {
   const pts  = (d.points || []).slice(0, 3).map(p => `<li>${esc(p)}</li>`).join("");
   const tags = (d.tags   || []).slice(0, 4).map(t => `<span class="mini-tag">${esc(t)}</span>`).join("");
   return `<div class="digest-mini">
-    <span class="digest-mini-label">✨ AI-дайджест</span>
+    <span class="digest-mini-label">${iconSvg("sparkles")} AI-дайджест</span>
     <p class="digest-mini-tldr">${esc(d.tldr || "")}</p>
     ${pts ? `<ul class="digest-points mini">${pts}</ul>` : ""}
     ${tags ? `<div class="mini-tags">${tags}</div>` : ""}
@@ -358,8 +383,9 @@ function wireChipGroup(container, onPick) {
     group.addEventListener("click", e => {
       const chip = e.target.closest(".chip");
       if (!chip) return;
-      $$(".chip", group).forEach(c => c.classList.remove("is-active"));
+      $$(".chip", group).forEach(c => { c.classList.remove("is-active"); c.setAttribute("aria-pressed", "false"); });
       chip.classList.add("is-active");
+      chip.setAttribute("aria-pressed", "true");
       onPick(key, chip.dataset.value);
     });
   });
@@ -380,7 +406,7 @@ async function loadSiteArticles() {
 function articleCard(a) {
   const body = esc(a.body || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>");
   return `<article class="article-card">
-    <h3 class="article-title">${a.promote ? "⭐ " : ""}${esc(a.title)}</h3>
+    <h3 class="article-title">${a.promote ? iconSvg("star") + " " : ""}${esc(a.title)}</h3>
     ${a.author ? `<div class="article-author">${esc(a.author)}</div>` : ""}
     ${a.summary ? `<p class="article-summary">${esc(a.summary)}</p>` : ""}
     ${a.body ? `<details class="article-more"><summary>Читать полностью</summary><div class="article-body"><p>${body}</p></div></details>` : ""}
@@ -405,7 +431,7 @@ function creatorCard(c) {
   return `<article class="creator-card">
     <div class="creator-name">${esc(c.name)}</div>
     <div class="creator-socials">
-      ${link(c.youtube_url, "▶ YouTube")}${link(tg, "✈ Telegram")}${link(tw, "🎮 Twitch")}${link(c.website, "🔗 Сайт")}
+      ${link(c.youtube_url, iconSvg("youtube") + " YouTube")}${link(tg, iconSvg("send") + " Telegram")}${link(tw, iconSvg("twitch") + " Twitch")}${link(c.website, iconSvg("globe") + " Сайт")}
     </div>
   </article>`;
 }
@@ -417,6 +443,9 @@ async function init() {
   renderEconomy();
   renderFeed();
 
+  // reflect toggle (tab/chip/lang) state to assistive tech
+  $$(".tab, .chip, .lang-btn").forEach(b => b.setAttribute("aria-pressed", String(b.classList.contains("is-active"))));
+
   // build filters
   wireChipGroup($("#buildFilters"), (key, val) => {
     buildState[key] = val;
@@ -427,8 +456,9 @@ async function init() {
   $("#feedTabs").addEventListener("click", e => {
     const tab = e.target.closest(".tab");
     if (!tab) return;
-    $$(".tab", $("#feedTabs")).forEach(t => t.classList.remove("is-active"));
+    $$(".tab", $("#feedTabs")).forEach(t => { t.classList.remove("is-active"); t.setAttribute("aria-pressed", "false"); });
     tab.classList.add("is-active");
+    tab.setAttribute("aria-pressed", "true");
     feedState.type = tab.dataset.type;
     renderFeed();
   });
@@ -437,16 +467,18 @@ async function init() {
   $("#langToggle").addEventListener("click", e => {
     const btn = e.target.closest(".lang-btn");
     if (!btn) return;
-    $$(".lang-btn", $("#langToggle")).forEach(b => b.classList.remove("is-active"));
+    $$(".lang-btn", $("#langToggle")).forEach(b => { b.classList.remove("is-active"); b.setAttribute("aria-pressed", "false"); });
     btn.classList.add("is-active");
+    btn.setAttribute("aria-pressed", "true");
     feedState.lang = btn.dataset.lang;
     renderFeed();
   });
 
   // mobile nav
   const burger = $("#burger"), nav = $("#nav");
-  burger.addEventListener("click", () => nav.classList.toggle("open"));
-  nav.addEventListener("click", e => { if (e.target.tagName === "A") nav.classList.remove("open"); });
+  const setNav = (open) => { nav.classList.toggle("open", open); burger.setAttribute("aria-expanded", String(open)); };
+  burger.addEventListener("click", () => setNav(!nav.classList.contains("open")));
+  nav.addEventListener("click", e => { if (e.target.tagName === "A") setNav(false); });
 }
 
 document.addEventListener("DOMContentLoaded", init);

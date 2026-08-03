@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <!-- ============ HEADER ============ -->
@@ -31,14 +31,14 @@
       <div class="header-tools">
         <label class="search">
           <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <input type="search" placeholder="Поиск: скилл, предмет, билд…" />
+          <input type="search" aria-label="Поиск по сайту" placeholder="Поиск: скилл, предмет, билд…" />
         </label>
         <div class="lang-toggle" id="langToggle" role="group" aria-label="Язык контента">
           <button class="lang-btn is-active" data-lang="all">Все</button>
           <button class="lang-btn" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="ru">RU</button>
         </div>
-        <button class="burger" id="burger" aria-label="Меню">☰</button>
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">☰</button>
       </div>
     </div>
     <div class="league-strip">
@@ -233,6 +233,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
